@@ -1,0 +1,57 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "YouTube Video Downloader API",
+        "description": "API for downloading YouTube videos",
+        "version": "1.0"
+    },
+    "paths": {
+        "/api/download": {
+            "get": {
+                "tags": [
+                    "YouTube"
+                ],
+                "summary": "Download a YouTube video",
+                "description": "Downloads a YouTube video and returns the file.",
+                "operationId": "48719f80f17681f947ff6eeb0d5c372f",
+                "parameters": [
+                    {
+                        "name": "url",
+                        "in": "query",
+                        "description": "YouTube video URL",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Video downloaded successfully",
+                        "content": {
+                            "application/octet-stream": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "binary"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input"
+                    },
+                    "500": {
+                        "description": "Failed to download video"
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "YouTube",
+            "description": "YouTube Video Download Endpoints"
+        }
+    ]
+}
