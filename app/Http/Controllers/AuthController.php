@@ -9,6 +9,12 @@ use Illuminate\Validation\ValidationException;
 
 
 /**
+ * @OA\Info(
+ *     title="Construction Website API (By Arvind)",
+ *     version="1.0.0",
+ *     description="API documentation for the Construction Website"
+ * )
+ *
  * @OA\SecurityScheme(
  *     securityScheme="sanctum",
  *     type="http",
