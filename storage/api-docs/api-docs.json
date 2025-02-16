@@ -11,7 +11,7 @@
                 "tags": [
                     "Authentication"
                 ],
-                "summary": "Register a new user",
+                "summary": "Register a new user and send OTP",
                 "operationId": "8a56853624e025573120a09a4c75d468",
                 "requestBody": {
                     "required": true,
@@ -44,7 +44,7 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "User registered successfully"
+                        "description": "User registered successfully and OTP sent"
                     },
                     "400": {
                         "description": "Validation error"
@@ -57,7 +57,7 @@
                 "tags": [
                     "Authentication"
                 ],
-                "summary": "Login user",
+                "summary": "Login user and send OTP",
                 "operationId": "a3b306d14572d1f4bd6c064b3233e7b8",
                 "requestBody": {
                     "required": true,
@@ -85,10 +85,87 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "User authenticated, returns API token"
+                        "description": "OTP sent successfully"
                     },
                     "401": {
                         "description": "Invalid credentials"
+                    }
+                }
+            }
+        },
+        "/api/verify-otp": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Verify OTP and authenticate user",
+                "operationId": "7809ddcd47cab2525ccd43d1c2031bfd",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "otp"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "john@example.com"
+                                    },
+                                    "otp": {
+                                        "type": "integer",
+                                        "example": 1234
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OTP verified successfully, returns API token"
+                    },
+                    "401": {
+                        "description": "Invalid or expired OTP"
+                    }
+                }
+            }
+        },
+        "/api/resend-otp": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Resend OTP to the user's email",
+                "operationId": "d345e764f1190fc7cfdc54bb87ec0a10",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "john@example.com"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OTP resent successfully"
+                    },
+                    "404": {
+                        "description": "User not found"
                     }
                 }
             }
@@ -98,7 +175,7 @@
                 "tags": [
                     "Authentication"
                 ],
-                "summary": "Logout user",
+                "summary": "Logout user and invalidate token",
                 "operationId": "fe8f3429cd6979b3b4517e186505f9f9",
                 "responses": {
                     "200": {
@@ -113,6 +190,129 @@
                         "sanctum": []
                     }
                 ]
+            }
+        },
+        "/api/forgot-password": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Send OTP for password reset",
+                "operationId": "7af8817e88ba5874543ff38f188248f1",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "john@example.com"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OTP sent successfully"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                }
+            }
+        },
+        "/api/verify-password-otp": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Verify OTP before password reset",
+                "operationId": "51e7f0ee00e9d2e165bd535754c7dd44",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "otp"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "john@example.com"
+                                    },
+                                    "otp": {
+                                        "type": "integer",
+                                        "example": 1234
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OTP verified successfully"
+                    },
+                    "401": {
+                        "description": "Invalid or expired OTP"
+                    }
+                }
+            }
+        },
+        "/api/reset-password": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Reset password using OTP",
+                "operationId": "00c0aad74830221c6da409a1355ec736",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "otp",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "john@example.com"
+                                    },
+                                    "otp": {
+                                        "type": "integer",
+                                        "example": 1234
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "newpassword123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Password reset successfully"
+                    },
+                    "401": {
+                        "description": "Invalid OTP or user not found"
+                    }
+                }
             }
         }
     },
